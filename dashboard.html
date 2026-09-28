@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نتائج رأي الطالب بالتدريسي</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0f3d4c;--navy-soft:#14586b;--gold:#d98b2b;--gold-soft:#f6e9d6;--bg:#f5f4ef;--card:#fff;--ink:#1b2b30;--muted:#5f7076;--line:#e4e2db;
+  --g5:#2e7d4f;--g4:#5c9a3c;--g3:#c9962a;--g2:#d0702b;--g1:#b23b3b;--shadow:0 8px 30px rgba(15,61,76,.07);--r:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Tajawal','Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 60px}
+header{background:linear-gradient(135deg,var(--navy),var(--navy-soft));color:#fff;border-radius:var(--r);padding:20px 24px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+header h1{font-size:1.35rem;font-weight:800}
+header p{opacity:.88;font-size:.9rem}
+header .sp{flex:1}
+button{font-family:inherit;cursor:pointer;border:none;border-radius:10px;font-weight:700}
+.btn{background:var(--navy);color:#fff;padding:10px 16px;font-size:.92rem}
+.btn-gold{background:var(--gold);color:#fff;padding:10px 16px;font-size:.92rem}
+.btn-ghost{background:#fff;color:var(--navy);border:1px solid var(--line);padding:9px 14px;font-size:.88rem}
+header .btn-ghost{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.3)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);margin-top:14px}
+.card h2{font-size:1.08rem;color:var(--navy);margin-bottom:8px}
+.hint{color:var(--muted);font-size:.88rem}
+input,select{font-family:inherit;font-size:.95rem;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+.load{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.load>div{border:1px dashed var(--line);border-radius:12px;padding:14px}
+.load h3{font-size:.95rem;color:var(--navy);margin-bottom:6px}
+.load .r{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:14px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.kpi .l{font-size:.82rem;color:var(--muted)}
+.kpi .v{font-size:1.7rem;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums}
+.kpi .s{font-size:.8rem;color:var(--muted)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+.tab{background:#fff;border:1px solid var(--line);color:var(--muted);padding:9px 16px;border-radius:999px;font-size:.9rem}
+.tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.bar .sp{flex:1}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th{background:#f3f2ec;color:var(--navy);font-weight:700;text-align:right;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+td.num,th.num{text-align:center;font-variant-numeric:tabular-nums}
+tr.t{cursor:pointer}
+tr.t:hover td{background:#faf9f5}
+tr.sub td{background:#fbfaf6;font-size:.86rem;color:#34474d}
+.scorebar{display:flex;align-items:center;gap:8px;min-width:150px}
+.scorebar .trk{flex:1;height:8px;background:#eeede7;border-radius:99px;overflow:hidden}
+.scorebar .trk i{display:block;height:100%;border-radius:99px}
+.scorebar b{min-width:48px;text-align:left;font-variant-numeric:tabular-nums}
+.gb{display:inline-block;padding:3px 10px;border-radius:999px;color:#fff;font-size:.78rem;font-weight:700;white-space:nowrap}
+.warn{color:var(--g2);font-size:.78rem;font-weight:700}
+.muted{color:var(--muted)}
+.qgrid{display:grid;grid-template-columns:1fr 180px;gap:4px 14px;font-size:.85rem;margin-top:6px}
+.comments{margin-top:10px;font-size:.86rem}
+.comments li{margin:4px 18px 0 0}
+.flag{background:#fff6ec;color:#8a5519;border-radius:8px;padding:2px 8px;font-size:.78rem}
+.empty{text-align:center;padding:40px 10px;color:var(--muted)}
+.hidden{display:none}
+.report{display:none}
+@media (max-width:760px){.load{grid-template-columns:1fr}.hide-sm{display:none}table{font-size:.82rem}}
+@media print{
+  body{background:#fff}.wrap{max-width:none;padding:0}
+  .no-print{display:none!important}
+  .card{box-shadow:none;border:none;padding:0}
+  body.print-one .main{display:none}
+  body.print-one .report{display:block}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="main">
+  <header>
+    <div><h1>نتائج استبانة رأي الطالب بالتدريسي</h1><p id="sub"></p><p id="modeTag" style="font-size:.8rem;opacity:.8"></p></div>
+    <span class="sp"></span>
+    <button class="btn-ghost no-print" id="exportBtn">⬇ تصدير النتائج (Excel/CSV)</button>
+    <button class="btn-ghost no-print" onclick="window.print()">🖨 طباعة</button>
+  </header>
+
+  <div class="card no-print">
+    <h2>مصدر البيانات</h2>
+    <div class="load">
+      <div><h3>① مباشرة من الخادم</h3>
+        <p class="hint">اكتب مفتاح المدير السرّي ثم «جلب النتائج».</p>
+        <div class="r"><input type="password" id="key" placeholder="مفتاح المدير" style="flex:1;min-width:160px">
+          <button class="btn" id="fetchBtn">جلب النتائج</button></div></div>
+      <div><h3>② من ملفات</h3>
+        <p class="hint">ملفات JSON من الاستمارة (وضع التجربة)، أو ورقة «الإجابات» محفوظة CSV.</p>
+        <div class="r"><input type="file" id="files" multiple accept=".json,.csv"></div></div>
+    </div>
+    <div id="msg" class="hint" style="margin-top:10px"></div>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="tabs no-print" id="tabs">
+    <button class="tab on" data-t="teachers">درجات التدريسيين</button>
+    <button class="tab" data-t="coverage">تغطية الجدول</button>
+    <button class="tab" data-t="sample">العيّنة حسب المرحلة</button>
+    <button class="tab" data-t="roster">مطابقة الأسماء والألقاب</button>
+    <button class="tab" data-t="method">آلية الاحتساب</button>
+    <button class="tab" data-t="admin">الإدارة ورموز الدخول</button>
+  </div>
+  <div class="card" id="view"></div>
+</div>
+<div class="report" id="report"></div>
+</div>
+
+<script src="data.js"></script>
+<script>
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const GCOL={"جيد جدا":"var(--g5)","جيد":"var(--g4)","متوسط":"var(--g3)","مقبول":"var(--g2)","ضعيف":"var(--g1)"};
+const MIN_N=5; // تحذير عند قلّة المجيبين
+document.getElementById("sub").textContent=`${SURVEY.college} — العام الدراسي ${SURVEY.academicYear}`;
+
+let ROWS=[];      // صف لكل (استمارة × تدريسي × مادة)
+let tab="teachers", filt={dept:"",q:"",sort:"score"}, open={};
+
+/* ---------- تحميل البيانات ---------- */
+function fromRecord(rec){
+  return (rec.evaluations||[]).map(ev=>({
+    form:rec.id, dept:rec.dept, stage:+rec.stage, section:rec.section||"", gender:rec.gender,
+    teacherId:ev.teacherId, teacher:ev.teacher, rank:ev.rank, homeDept:ev.homeDept, subject:ev.subject, semester:ev.semester||"",
+    answers:ev.answers.map(labelValue), comment:ev.comment||""
+  }));
+}
+function fromSheetRow(r){ // ترتيب أعمدة ورقة «الإجابات»
+  return { form:r[1], dept:r[3], stage:+r[4], section:r[5]||"", gender:r[6],
+    teacherId:r[9], teacher:r[10], rank:r[11], homeDept:r[12], subject:r[13],
+    answers:r.slice(14,24).map(labelValue), comment:r[24]||"", semester:r[25]||"" };
+}
+function parseCSV(t){
+  const out=[];let row=[],f="",q=false;
+  t=t.replace(/^﻿/,"");
+  for(let i=0;i<t.length;i++){const c=t[i];
+    if(q){ if(c=='"'){ if(t[i+1]=='"'){f+='"';i++;} else q=false; } else f+=c; }
+    else if(c=='"')q=true; else if(c==','){row.push(f);f="";}
+    else if(c=='\n'||c=='\r'){ if(c=='\r'&&t[i+1]=='\n')i++; row.push(f);out.push(row);row=[];f=""; }
+    else f+=c; }
+  if(f||row.length){row.push(f);out.push(row);}
+  return out.filter(r=>r.some(x=>x!==""));
+}
+function setRows(rows,src){
+  const seen=new Set();
+  ROWS=rows.filter(r=>{ if(!r.teacherId||r.answers.some(v=>!v))return false;
+    const k=r.form+"|"+r.teacherId+"|"+r.subject; if(seen.has(k))return false; seen.add(k); return true; });
+  const bad=rows.length-ROWS.length;
+  document.getElementById("msg").innerHTML=`✓ تم تحميل ${ROWS.length} تقييماً من ${src}${bad?` — استُبعد ${bad} سطراً ناقصاً أو مكرراً`:""}.`;
+  render();
+}
+function adminKey(){ return document.getElementById("key").value.trim(); }
+document.getElementById("fetchBtn").onclick=async()=>{
+  const m=document.getElementById("msg");
+  if(SURVEY.supabase){
+    m.textContent="جارٍ الجلب…";
+    try{ const j=await svRpc("sv_results",{p_key:adminKey()}); if(!j.ok)throw new Error(j.error);
+      try{ sessionStorage.setItem("sv_key",adminKey()); }catch(e){}
+      setRows(j.records.map(r=>({...r,answers:r.answers.map(Number)})),"الخادم");
+    }catch(e){ m.textContent="تعذّر الجلب: "+e.message; }
+    return;
+  }
+  if(!SURVEY.endpoint){ m.textContent="لم يُضبط رابط الخدمة (endpoint) في data.js بعد."; return; }
+  m.textContent="جارٍ الجلب…";
+  try{ const r=await fetch(SURVEY.endpoint+"?action=data&key="+encodeURIComponent(document.getElementById("key").value));
+    const j=await r.json(); if(!j.ok)throw new Error(j.error);
+    setRows(j.rows.map(fromSheetRow),"Google Sheet");
+  }catch(e){ m.textContent="تعذّر الجلب: "+e.message; }
+};
+document.getElementById("files").onchange=async e=>{
+  let all=[];
+  for(const f of e.target.files){
+    const t=await f.text();
+    try{
+      if(/\.json$/i.test(f.name)){ const j=JSON.parse(t); (Array.isArray(j)?j:[j]).forEach(r=>all=all.concat(fromRecord(r))); }
+      else { const rs=parseCSV(t); all=all.concat(rs.slice(1).map(fromSheetRow)); }
+    }catch(err){ document.getElementById("msg").textContent="ملف غير صالح: "+f.name; return; }
+  }
+  setRows(all,`${e.target.files.length} ملف`);
+};
+
+/* ---------- الاحتساب ---------- */
+function group(rows,keyFn){ const m={}; rows.forEach(r=>{const k=keyFn(r);(m[k]=m[k]||[]).push(r);}); return m; }
+function teacherResults(){
+  const byT=group(ROWS,r=>r.teacherId);
+  return Object.entries(byT).map(([id,rs])=>{
+    const t=TEACHERS[id]||{rank:rs[0].rank,name:rs[0].teacher,dept:rs[0].homeDept};
+    const subs=Object.values(group(rs,r=>r.dept+"|"+r.stage+"|"+r.subject)).map(x=>({
+      subject:x[0].subject, semester:x[0].semester, dept:x[0].dept, stage:x[0].stage, sections:[...new Set(x.map(r=>r.section).filter(Boolean))], ...officialScore(x)}));
+    // الدرجة السنوية = متوسط درجات المواد موزوناً بعدد المجيبين (كل مادة = استمارة وزارية مستقلة)
+    const N=subs.reduce((a,x)=>a+x.n,0), w=f=>subs.reduce((a,x)=>a+f(x)*x.n,0)/N;
+    const score=w(x=>x.score);
+    const res={n:N, score, grade:gradeOf(score), qMeans:QUESTIONS.map((_,i)=>w(x=>x.qMeans[i]))};
+    return {id, label:(t.rank?t.rank+" ":"")+t.name, dept:t.dept, forms:new Set(rs.map(r=>r.form)).size,
+      comments:rs.filter(r=>r.comment).map(r=>({s:r.subject,c:r.comment})), subs, ...res};
+  });
+}
+
+/* ---------- العرض ---------- */
+function scoreCell(s,g){ return `<div class="scorebar"><span class="trk"><i style="width:${Math.min(100,s)}%;background:${GCOL[g]}"></i></span><b>${s.toFixed(2)}</b></div>`; }
+function gbadge(g){ return `<span class="gb" style="background:${GCOL[g]}">${g}</span>`; }
+
+function renderKPIs(){
+  const k=document.getElementById("kpis");
+  if(!ROWS.length){ k.innerHTML=""; return; }
+  const forms=new Set(ROWS.map(r=>r.form)).size, tr=teacherResults(), all=officialScore(ROWS);
+  const dist={}; tr.forEach(t=>dist[t.grade]=(dist[t.grade]||0)+1);
+  k.innerHTML=`
+   <div class="kpi"><div class="l">الاستمارات المستلمة</div><div class="v">${forms}</div><div class="s">طالب/طالبة</div></div>
+   <div class="kpi"><div class="l">التقييمات (تدريسي × مادة)</div><div class="v">${ROWS.length}</div></div>
+   <div class="kpi"><div class="l">التدريسيون المقيَّمون</div><div class="v">${tr.length}</div><div class="s">من ${Object.keys(TEACHERS).length} في القوائم</div></div>
+   <div class="kpi"><div class="l">متوسط الكلية</div><div class="v">${all.score.toFixed(1)}%</div><div class="s">${all.grade}</div></div>
+   <div class="kpi"><div class="l">توزيع الفئات</div><div class="s" style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">
+     ${GRADE_BANDS.map(b=>dist[b.t]?`<span class="gb" style="background:${GCOL[b.t]}">${b.t}: ${dist[b.t]}</span>`:"").join("")}</div></div>`;
+}
+
+function viewTeachers(){
+  if(!ROWS.length) return `<div class="empty">لا توجد بيانات بعد — اجلب النتائج من Google Sheet أو حمّل الملفات أعلاه.</div>`;
+  let tr=teacherResults();
+  if(filt.dept) tr=tr.filter(t=>t.dept===filt.dept);
+  if(filt.q) tr=tr.filter(t=>t.label.includes(filt.q)||t.subs.some(s=>s.subject.includes(filt.q)));
+  tr.sort(filt.sort==="name"?(a,b)=>a.label.localeCompare(b.label,"ar"):(a,b)=>b.score-a.score);
+  return `
+  <div class="bar no-print">
+    <select id="fDept"><option value="">كل الأقسام (قسم الملاك)</option>
+      ${Object.entries(DEPTS).map(([k,d])=>`<option value="${k}" ${filt.dept===k?"selected":""}>${d.name}</option>`).join("")}</select>
+    <input id="fQ" placeholder="بحث باسم التدريسي أو المادة" value="${esc(filt.q)}">
+    <select id="fSort"><option value="score">ترتيب: الدرجة</option><option value="name" ${filt.sort==="name"?"selected":""}>ترتيب: الاسم</option></select>
+    <span class="sp"></span><span class="hint">اضغط على التدريسي لعرض تفصيل مواده وفقراته</span>
+  </div>
+  <table><thead><tr><th class="num">#</th><th>التدريسي</th><th class="hide-sm">قسم الملاك</th><th class="num">المواد</th><th class="num">المجيبون</th><th>الدرجة النهائية</th><th>الفئة</th><th class="no-print"></th></tr></thead><tbody>
+  ${tr.map((t,i)=>`
+    <tr class="t" data-id="${t.id}"><td class="num">${i+1}</td>
+      <td><b>${esc(t.label)}</b> ${t.n<MIN_N?`<span class="warn">⚠ عيّنة صغيرة</span>`:""}</td>
+      <td class="hide-sm">${DEPTS[t.dept]?DEPTS[t.dept].name.replace("قسم ",""):"—"}</td>
+      <td class="num">${t.subs.length}</td><td class="num">${t.n}</td>
+      <td>${scoreCell(t.score,t.grade)}</td><td>${gbadge(t.grade)}</td>
+      <td class="no-print"><button class="btn-ghost" data-rep="${t.id}">تقرير</button></td></tr>
+    ${open[t.id]?detailRows(t):""}`).join("")}
+  </tbody></table>`;
+}
+function detailRows(t){
+  return t.subs.map(s=>`<tr class="sub"><td></td><td>↳ ${esc(s.subject)} <span class="muted">${esc(s.semester)}</span></td>
+      <td class="hide-sm">${DEPTS[s.dept].name.replace("قسم ","")} — م${s.stage}${s.sections.length?" ("+s.sections.join("،")+")":""}</td>
+      <td></td><td class="num">${s.n}</td><td>${scoreCell(s.score,s.grade)}</td><td>${gbadge(s.grade)}</td><td class="no-print"></td></tr>`).join("")+
+   `<tr class="sub"><td></td><td colspan="7">
+      <div class="qgrid">${QUESTIONS.map((q,i)=>`<span>${i+1}. ${esc(q)}</span><span>${scoreCell(t.qMeans[i]/5*100,gradeOf(t.qMeans[i]/5*100)).replace(/<b>.*<\/b>/,`<b>${t.qMeans[i].toFixed(2)}/5</b>`)}</span>`).join("")}</div>
+      ${t.comments.length?`<div class="comments"><b>ملاحظات الطلبة (${t.comments.length}):</b><ul>${t.comments.map(c=>`<li><span class="muted">[${esc(c.s)}]</span> ${esc(c.c)}</li>`).join("")}</ul></div>`:""}
+   </td></tr>`;
+}
+
+function viewCoverage(){
+  const have=group(ROWS,r=>r.dept+"|"+r.stage+"|"+r.teacherId+"|"+r.subject);
+  let html=`<p class="hint" style="margin-bottom:10px">كل (مادة × تدريسي) في جدول الدروس وعدد الطلبة الذين قيّموه. الصفوف الصفرية لم تصلها أي استمارة بعد.</p>
+  <table><thead><tr><th>القسم</th><th class="num">المرحلة</th><th>الفصل</th><th>المادة</th><th>التدريسي</th><th class="num">المجيبون</th><th>الدرجة</th></tr></thead><tbody>`;
+  Object.keys(ASSIGNMENTS).forEach(d=>Object.keys(ASSIGNMENTS[d]).forEach(st=>{
+    ASSIGNMENTS[d][st].list.forEach(a=>{
+      const rs=have[d+"|"+st+"|"+a[1]+"|"+a[0]]||[]; const res=rs.length?officialScore(rs):null;
+      const tt=TEACHERS[a[1]];
+      html+=`<tr><td>${DEPTS[d].name.replace("قسم ","")}</td><td class="num">${st}${a[3]?" ("+a[3].join("،")+")":""}</td><td>${SEM_NAMES[a[2]]}</td><td>${esc(a[0])}</td>
+        <td>${esc(teacherLabel(a[1]))}</td>
+        <td class="num" style="${rs.length?"":"color:var(--g1);font-weight:700"}">${rs.length}</td>
+        <td>${res?scoreCell(res.score,res.grade):"—"}</td></tr>`;
+    });
+  }));
+  return html+"</tbody></table>";
+}
+
+function viewSample(){
+  if(!ROWS.length) return `<div class="empty">لا توجد بيانات بعد.</div>`;
+  const forms=Object.values(group(ROWS,r=>r.form)).map(x=>x[0]);
+  let html=`<p class="hint" style="margin-bottom:10px">نسب اختيار الطلبة في الدليل الوزاري للمراحل الأربع: الأولى 10% · الثانية 20% · الثالثة 30% · الرابعة 40%. يقارن الجدول نسب الاستمارات المستلمة بها.</p>
+  <table><thead><tr><th>القسم</th>${[1,2,3,4].map(s=>`<th class="num">م${s} (المستهدف ${SAMPLE_SHARE[s]}%)</th>`).join("")}<th class="num">المجموع</th><th class="num">ذكور / إناث</th></tr></thead><tbody>`;
+  Object.keys(DEPTS).forEach(d=>{
+    const f=forms.filter(x=>x.dept===d), n=f.length;
+    html+=`<tr><td>${DEPTS[d].name}</td>${[1,2,3,4].map(s=>{const c=f.filter(x=>x.stage===s).length;
+      return `<td class="num">${c}${n?` <span class="muted">(${(c/n*100).toFixed(0)}%)</span>`:""}</td>`;}).join("")}
+      <td class="num"><b>${n}</b></td><td class="num">${f.filter(x=>x.gender==="ذكر").length} / ${f.filter(x=>x.gender==="انثى").length}</td></tr>`;
+  });
+  return html+"</tbody></table>";
+}
+
+function viewRoster(){
+  const taught=new Set(); Object.values(ASSIGNMENTS).forEach(d=>Object.values(d).forEach(s=>s.list.forEach(a=>taught.add(a[1]))));
+  const flagged=Object.entries(TEACHERS).filter(([,t])=>t.note||t.verify).length;
+  return `<p class="hint" style="margin-bottom:10px">نتيجة مطابقة قوائم الأقسام مع «المنصة» (اسماء الهيئة التدريسية.pdf) وجداول الدروس. ${flagged} اسماً عليه ملاحظة. تُعدَّل الأسماء والألقاب من ملف data.js.</p>
+  <table><thead><tr><th>الرمز</th><th>التدريسي (المعتمد)</th><th>قسم الملاك</th><th class="num">في الجدول</th><th>ملاحظة المطابقة</th></tr></thead><tbody>
+  ${Object.entries(TEACHERS).map(([id,t])=>`<tr><td class="muted">${id}</td><td><b>${esc(teacherLabel(id))}</b></td>
+    <td>${DEPTS[t.dept].name.replace("قسم ","")}</td><td class="num">${taught.has(id)?"✓":"—"}</td>
+    <td>${esc(t.note||"مطابق ✓")}</td></tr>`).join("")}
+  </tbody></table>`;
+}
+
+function viewMethod(){
+  return `<div style="max-width:760px">
+  <p>تُحسب الدرجة وفق ملف «معادلة احتساب رأي الطالب بالتدريسي» الوزاري حرفياً:</p>
+  <ol style="margin:10px 22px 0 0">
+    <li>أوزان البدائل: جيد جدا = 5 · جيد = 4 · متوسط = 3 · مقبول = 2 · ضعيف = 1.</li>
+    <li>متوسط كل فقرة = مجموع (عدد التكرارات × الوزن) ÷ عدد الطلبة المجيبين.</li>
+    <li><b>الدرجة النهائية = (متوسط متوسطات الفقرات العشر ÷ 5) × 100</b>.</li>
+    <li><b>ملاحظة على الملف الوزاري:</b> في خلايا «متوسط الأسئلة» يُقسم المجموع على <code>COUNTA(G:G)</code>، وهي تعدّ خلية العنوان أيضاً،
+      فيصبح المقام (عدد الطلبة + 1). مثال من الملف نفسه (النموذج 1، 46 طالباً): الملف يعطي 79.36% (جيد)، والمتوسط الحقيقي 81.09% (جيد جدا).
+      ويشتدّ الأثر مع العيّنات الصغيرة: 5 طلبة أجابوا جميعاً «جيد جدا» ⇐ الملف يعطي 83.3% بدل 100%. لذلك تعتمد المنصة افتراضياً المتوسط الحقيقي الوارد نصّاً في الدليل («متوسط التقدير ÷ 5 × 100»).</li>
+    <li>الفئة: جيد جدا 80% فأكثر · جيد 70–79.99 · متوسط 60–69.99 · مقبول 50–59.99 · ضعيف دون 50.</li>
+  </ol>
+  <p style="margin-top:12px"><b>الدرجة السنوية للتدريسي:</b> استبانة واحدة للعام الدراسي. تُحسب المعادلة لكل مادة على حدة (كل مادة = استمارة وزارية مستقلة)،
+  ثم الدرجة السنوية = متوسط درجات المواد موزوناً بعدد الطلبة المجيبين في كل مادة. (في طريقة المتوسط الحقيقي يساوي هذا تماماً جمع كل الإجابات في استمارة واحدة.)</p>
+  <div class="card" style="margin-top:14px;background:var(--gold-soft)"><b>طريقة الاحتساب المعتمدة الآن:</b>
+    <div class="bar" style="margin-top:8px">
+      <button class="${SURVEY.scoringMode==='excel'?'btn':'btn-ghost'}" data-mode="excel">مطابقة الملف الوزاري (÷ عدد الطلبة + 1)</button>
+      <button class="${SURVEY.scoringMode==='mean'?'btn':'btn-ghost'}" data-mode="mean">المتوسط الحقيقي (÷ عدد الطلبة)</button></div>
+    <div class="hint">الافتراضي يُضبط في data.js (scoringMode) وفي Code.gs (SCORING_MODE) — الزرّان هنا للمقارنة فقط.</div></div>
+  <p style="margin-top:8px" class="hint">يظهر تنبيه «عيّنة صغيرة» إذا قلّ عدد المجيبين عن ${MIN_N}.</p></div>`;
+}
+
+let ADM=null, CODES=[];
+function viewAdmin(){
+  if(!SURVEY.supabase) return `<div class="empty">الإدارة متاحة مع خادم Supabase فقط.</div>`;
+  if(!ADM) return `<div class="empty">اجلب النتائج بمفتاح المدير أولاً، ثم <button class="btn" id="admLoad">تحميل الإعدادات</button></div>`;
+  return `<p class="hint">رموز الدخول تمنع ملء الاستمارة أكثر من مرة: كل رمز يُستعمل لمرة واحدة ولا يرتبط باسم الطالب.</p>
+   <div class="bar" style="margin-top:10px"><b>رموز الدخول الآن: ${ADM.require_code?"مفعّلة ✓":"معطّلة"}</b>
+     <button class="${ADM.require_code?"btn-ghost":"btn"}" id="admToggle">${ADM.require_code?"تعطيل الرموز":"تفعيل الرموز"}</button>
+     <span class="hint">مولَّد: ${ADM.codes_total} · مستخدم: ${ADM.codes_used}</span></div>
+   <div class="bar" style="margin-top:12px">
+     <input type="number" id="cN" value="30" min="1" max="500" style="width:90px">
+     <select id="cD"><option value="">أي قسم</option>${Object.entries(DEPTS).map(([k,d])=>`<option value="${k}">${d.name}</option>`).join("")}</select>
+     <select id="cS"><option value="">أي مرحلة</option>${[1,2,3,4].map(n=>`<option value="${n}">المرحلة ${STAGE_NAMES[n]}</option>`).join("")}</select>
+     <button class="btn-gold" id="cGen">توليد رموز</button></div>
+   ${CODES.length?`<div class="card" style="margin-top:12px"><div class="bar"><b>الرموز الجديدة (${CODES.length}) — اطبعها وقصّها ووزّعها:</b><span class="sp"></span><button class="btn-ghost" onclick="window.print()">🖨 طباعة</button></div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">${CODES.map(c=>`<div style="border:1px dashed #999;border-radius:8px;padding:10px;text-align:center"><div class="hint">رمز استبانة رأي الطالب</div><b style="font-size:1.3rem;letter-spacing:2px;direction:ltr;display:block">${c}</b></div>`).join("")}</div></div>`:""}`;
+}
+async function admRefresh(){ const j=await svRpc("sv_admin_config",{p_key:adminKey()}); if(!j.ok) throw new Error(j.error); ADM=j; }
+function bindAdmin(v){
+  const err=e=>alert("خطأ: "+e.message);
+  const l=v.querySelector("#admLoad"); if(l) l.onclick=()=>admRefresh().then(render).catch(err);
+  const t=v.querySelector("#admToggle"); if(t) t.onclick=()=>svRpc("sv_admin_config",{p_key:adminKey(),p_require_code:!ADM.require_code}).then(j=>{if(!j.ok)throw new Error(j.error);ADM=j;render();}).catch(err);
+  const g=v.querySelector("#cGen"); if(g) g.onclick=()=>svRpc("sv_admin_codes",{p_key:adminKey(),p_n:+v.querySelector("#cN").value||1,
+      p_dept:v.querySelector("#cD").value||null,p_stage:+v.querySelector("#cS").value||null})
+    .then(j=>{if(!j.ok)throw new Error(j.error);CODES=j.codes;return admRefresh();}).then(render).catch(err);
+}
+function render(){
+  renderKPIs();
+  const v=document.getElementById("view");
+  v.innerHTML={teachers:viewTeachers,coverage:viewCoverage,sample:viewSample,roster:viewRoster,method:viewMethod,admin:viewAdmin}[tab]();
+  if(tab==="admin") bindAdmin(v);
+  if(tab==="teachers"&&ROWS.length){
+    document.getElementById("fDept").onchange=e=>{filt.dept=e.target.value;render();};
+    document.getElementById("fSort").onchange=e=>{filt.sort=e.target.value;render();};
+    const q=document.getElementById("fQ"); q.oninput=e=>{filt.q=e.target.value;clearTimeout(q._t);q._t=setTimeout(()=>{render();const n=document.getElementById("fQ");n.focus();n.setSelectionRange(n.value.length,n.value.length);},300);};
+    v.querySelectorAll("tr.t").forEach(tr=>tr.onclick=e=>{ if(e.target.dataset.rep)return; open[tr.dataset.id]=!open[tr.dataset.id]; render(); });
+    v.querySelectorAll("[data-rep]").forEach(b=>b.onclick=()=>printReport(b.dataset.rep));
+  }
+  v.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{ SURVEY.scoringMode=b.dataset.mode; render(); });
+  document.getElementById("modeTag").textContent=SURVEY.scoringMode==="excel"?"الاحتساب: مطابق للملف الوزاري":"الاحتساب: المتوسط الحقيقي";
+}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{ tab=b.dataset.t;
+  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===b)); render(); });
+
+/* ---------- تقرير فردي مطبوع ---------- */
+function printReport(id){
+  const t=teacherResults().find(x=>x.id===id);
+  document.getElementById("report").innerHTML=`
+   <div style="text-align:center;margin-bottom:16px"><h2 style="color:var(--navy)">${SURVEY.university} — ${SURVEY.college}</h2>
+     <div>شعبة ضمان الجودة والأداء الجامعي</div><h3 style="margin-top:8px">نتيجة استبانة رأي الطالب بالتدريسي — العام الدراسي ${SURVEY.academicYear}</h3></div>
+   <table><tr><th>التدريسي</th><td>${esc(t.label)}</td><th>قسم الملاك</th><td>${DEPTS[t.dept].name}</td></tr>
+     <tr><th>عدد الطلبة المجيبين</th><td>${t.n}</td><th>الدرجة النهائية</th><td><b>${t.score.toFixed(2)}%</b> — ${t.grade}</td></tr></table>
+   <h4 style="margin:14px 0 6px">درجة كل مادة</h4>
+   <table><tr><th>المادة</th><th>الفصل</th><th>القسم / المرحلة</th><th class="num">المجيبون</th><th class="num">الدرجة</th><th>الفئة</th></tr>
+     ${t.subs.map(s=>`<tr><td>${esc(s.subject)}</td><td>${esc(s.semester)}</td><td>${DEPTS[s.dept].name} / ${STAGE_NAMES[s.stage]}</td><td class="num">${s.n}</td><td class="num">${s.score.toFixed(2)}%</td><td>${s.grade}</td></tr>`).join("")}</table>
+   <h4 style="margin:14px 0 6px">متوسط الفقرات (من 5)</h4>
+   <table>${QUESTIONS.map((q,i)=>`<tr><td>${i+1}. ${esc(q)}</td><td class="num">${t.qMeans[i].toFixed(2)}</td></tr>`).join("")}</table>
+   <p style="margin-top:14px;font-size:.85rem">الدرجة النهائية = (متوسط متوسطات الفقرات ÷ 5) × 100 — وفق المعادلة الوزارية.</p>
+   <div style="display:flex;justify-content:space-between;margin-top:50px"><span>مسؤول شعبة ضمان الجودة</span><span>العميد</span></div>`;
+  document.body.classList.add("print-one"); window.print(); document.body.classList.remove("print-one");
+}
+
+/* ---------- تصدير ---------- */
+document.getElementById("exportBtn").onclick=()=>{
+  if(!ROWS.length) return alert("لا توجد بيانات للتصدير.");
+  const lines=[["التدريسي","قسم الملاك","المادة","الفصل","قسم الطلبة","المرحلة","عدد المجيبين","الدرجة النهائية %","الفئة",...QUESTIONS.map((_,i)=>"متوسط الفقرة "+(i+1))]];
+  teacherResults().sort((a,b)=>b.score-a.score).forEach(t=>{
+    lines.push([t.label,DEPTS[t.dept].name,"الدرجة السنوية (كل المواد)","","","",t.n,t.score.toFixed(2),t.grade,...t.qMeans.map(m=>m.toFixed(2))]);
+    t.subs.forEach(s=>lines.push([t.label,DEPTS[t.dept].name,s.subject,s.semester,DEPTS[s.dept].name,s.stage,s.n,s.score.toFixed(2),s.grade,...s.qMeans.map(m=>m.toFixed(2))]));
+  });
+  const csv="﻿"+lines.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")).join("\r\n");
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+  a.download=`نتائج_رأي_الطالب_${SURVEY.academicYear}.csv`; a.click();
+};
+
+try{ const k=sessionStorage.getItem("sv_key"); if(k) document.getElementById("key").value=k; }catch(e){}
+document.getElementById("key").addEventListener("keydown",e=>{ if(e.key==="Enter") document.getElementById("fetchBtn").click(); });
+render();
+</script>
+</body>
+</html>

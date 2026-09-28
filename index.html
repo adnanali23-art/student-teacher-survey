@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>استبانة رأي الطالب بالتدريسي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0f3d4c; --navy-soft:#14586b; --gold:#d98b2b; --gold-soft:#f6e9d6;
+  --bg:#f5f4ef; --card:#fff; --ink:#1b2b30; --muted:#5f7076; --line:#e4e2db;
+  --green:#2e7d4f; --green-soft:#eaf5ee; --red:#b23b3b;
+  --shadow:0 8px 30px rgba(15,61,76,.08); --radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Tajawal','Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;margin:0 auto;padding:20px 16px 64px}
+header.site{background:linear-gradient(135deg,var(--navy),var(--navy-soft));color:#fff;border-radius:var(--radius);padding:24px 26px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+header.site::after{content:"";position:absolute;left:-40px;top:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(217,139,43,.35),transparent 70%)}
+header.site h1{font-size:1.45rem;font-weight:800}
+header.site p{opacity:.92;font-size:.95rem;margin-top:4px}
+.brandline{font-size:.82rem;opacity:.85;margin-top:10px;border-top:1px solid rgba(255,255,255,.2);padding-top:10px}
+
+.steps{display:flex;gap:8px;margin:16px 0 4px;flex-wrap:wrap}
+.step{flex:1;min-width:110px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 12px;font-size:.82rem;color:var(--muted);display:flex;align-items:center;gap:8px}
+.step .num{width:24px;height:24px;border-radius:50%;background:var(--line);color:var(--muted);display:grid;place-items:center;font-weight:700;font-size:.8rem;flex-shrink:0}
+.step.active{border-color:var(--gold);background:var(--gold-soft);color:var(--navy)}
+.step.active .num{background:var(--gold);color:#fff}
+.step.done .num{background:var(--green);color:#fff}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-top:16px}
+.card h2{font-size:1.2rem;color:var(--navy);margin-bottom:4px}
+.hint{color:var(--muted);font-size:.92rem;margin-bottom:14px}
+label.fld{display:block;font-weight:700;margin:14px 0 6px;font-size:.95rem}
+select,input[type=text]{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;font-family:inherit;font-size:16px;background:#fff;color:var(--ink)}
+select:focus,input:focus,textarea:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.row>div{flex:1;min-width:190px}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 18px;cursor:pointer;font-family:inherit;font-size:.95rem;color:var(--ink)}
+.pill.sel{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:700}
+
+button{font-family:inherit;cursor:pointer;border:none;border-radius:12px;font-weight:700}
+.btn{background:var(--navy);color:#fff;padding:13px 22px;font-size:1rem}
+.btn:hover{background:var(--navy-soft)}
+.btn:disabled{background:#c7ccce;cursor:not-allowed}
+.btn-gold{background:var(--gold);color:#fff;padding:13px 22px;font-size:1rem}
+.btn-gold:disabled{background:#e3cfb2;cursor:not-allowed}
+.btn-ghost{background:transparent;color:var(--navy);border:1px solid var(--line);padding:12px 20px;font-size:.95rem}
+.btn-ghost:hover{background:#f0efe9}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;align-items:center}
+.spacer{flex:1}
+
+.progress{height:10px;background:#ecebe5;border-radius:999px;overflow:hidden;margin:6px 0 4px}
+.progress>i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#e8a650);transition:width .3s}
+.progress-txt{font-size:.85rem;color:var(--muted)}
+
+.tlist{display:grid;gap:10px;margin-top:14px}
+.titem{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:#fff;cursor:pointer;transition:.15s;text-align:right;width:100%;font-family:inherit;color:var(--ink)}
+.titem:hover{border-color:var(--gold);box-shadow:var(--shadow)}
+.titem .av{width:44px;height:44px;border-radius:50%;background:var(--gold-soft);color:var(--navy);display:grid;place-items:center;font-weight:800;flex-shrink:0}
+.titem .tx{flex:1;min-width:0}
+.titem .nm{font-weight:700;color:var(--navy);font-size:1.02rem}
+.titem .sb{font-size:.88rem;color:var(--muted)}
+.titem .sb b{color:var(--ink);font-weight:600}
+.titem .st{font-size:.78rem;font-weight:700;padding:4px 10px;border-radius:999px;background:#f0efe9;color:var(--muted);white-space:nowrap}
+.titem.done{background:var(--green-soft);border-color:#bfe0cb}
+.titem.done .av{background:var(--green);color:#fff}
+.titem.done .st{background:var(--green);color:#fff}
+.titem.skip{opacity:.65}
+.titem.skip .st{background:#e9e9e9;color:#666}
+.semhead{font-weight:800;color:var(--navy);font-size:.95rem;margin:14px 0 2px;display:flex;align-items:center;gap:8px}
+.semhead::after{content:"";flex:1;height:1px;background:var(--line)}
+
+.subjhead{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 4px}
+.tag{background:var(--gold-soft);color:var(--navy);border-radius:10px;padding:6px 12px;font-size:.9rem}
+.tag b{font-weight:800}
+.q{border-bottom:1px solid var(--line);padding:16px 0}
+.q:last-of-type{border-bottom:none}
+.q.missing{background:#fff6f0;border-radius:10px;padding:16px 10px}
+.qtext{font-weight:500;margin-bottom:10px;display:flex;gap:8px}
+.qn{color:var(--gold);font-weight:800;flex-shrink:0}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.scale button{border:1px solid var(--line);border-radius:10px;padding:10px 4px;font-size:.9rem;background:#fff;color:var(--muted);font-weight:500}
+.scale button:hover{border-color:var(--gold)}
+.scale button.sel{background:var(--navy);color:#fff;border-color:var(--navy);font-weight:700}
+.quick{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:.85rem;color:var(--muted);margin-top:6px}
+.quick button{background:#f0efe9;color:var(--navy);padding:5px 10px;font-size:.8rem;border-radius:8px}
+textarea{width:100%;min-height:80px;padding:12px;border:1px solid var(--line);border-radius:12px;font-family:inherit;font-size:16px;resize:vertical}
+.linkbtn{background:none;color:var(--red);font-weight:500;font-size:.88rem;padding:6px 0;text-decoration:underline}
+
+.notice{background:var(--gold-soft);border:1px solid #e8d2a8;border-radius:12px;padding:12px 14px;font-size:.9rem;color:#6d4a1b;margin-top:14px}
+.error{background:#fbeeee;border:1px solid #eccaca;color:var(--red);border-radius:12px;padding:12px 14px;font-size:.92rem;margin-top:14px}
+.sum{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;background:#fff}
+.sum .m{font-weight:700;color:var(--navy)}
+.sum .s{font-size:.85rem;color:var(--muted)}
+.sum .v{background:var(--gold-soft);color:var(--navy);font-weight:800;padding:4px 12px;border-radius:20px;font-size:.88rem;white-space:nowrap}
+.success{text-align:center;padding:30px 10px}
+.ok{width:72px;height:72px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:2rem;margin:0 auto 16px}
+footer.note{text-align:center;color:var(--muted);font-size:.8rem;margin-top:26px}
+@media (max-width:560px){
+  .scale{grid-template-columns:repeat(5,1fr);gap:4px}
+  .scale button{font-size:.78rem;padding:9px 2px}
+  header.site h1{font-size:1.2rem}
+  .steps{gap:4px;flex-wrap:nowrap}
+  .step{min-width:0;padding:8px 6px;font-size:.72rem;gap:4px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="site">
+    <h1 id="h-title">استبانة رأي الطالب بالتدريسي</h1>
+    <p id="h-sub"></p>
+    <div class="brandline">الاستبانة سرّية ولا يُطلب اسم الطالب — يرجى الإجابة بدقة وموضوعية. تُملأ مرة واحدة وتشمل جميع تدريسيي مرحلتك.</div>
+  </header>
+
+  <div class="steps">
+    <div class="step" data-s="info"><span class="num">1</span> بياناتك</div>
+    <div class="step" data-s="list"><span class="num">2</span> تدريسيوك</div>
+    <div class="step" data-s="eval"><span class="num">3</span> التقييم</div>
+    <div class="step" data-s="review"><span class="num">4</span> الإرسال</div>
+  </div>
+
+  <div id="app"></div>
+  <footer class="note">شعبة ضمان الجودة والأداء الجامعي — كلية الهندسة / الشرقاط</footer>
+</div>
+
+<script src="data.js"></script>
+<script>
+const LS_DRAFT = "tq_draft_" + SURVEY.academicYear;
+const LS_DONE  = "tq_done_"  + SURVEY.academicYear;
+const app = document.getElementById("app");
+document.getElementById("h-sub").textContent =
+  `${SURVEY.university} — ${SURVEY.college} — العام الدراسي ${SURVEY.academicYear}`;
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function lsGet(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }
+function lsSet(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+function lsDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+
+/* الحالة */
+let S = lsGet(LS_DRAFT) || {
+  dept:"", stage:"", section:"", gender:"", pc:"", net:"", code:"",
+  evals:{},   // key -> {answers:[1..5], comment}
+  skipped:{}, // key -> true
+  cur:null
+};
+function save(){ lsSet(LS_DRAFT, S); }
+function items(){ return S.dept && S.stage ? assignmentsFor(S.dept, +S.stage, S.section) : []; }
+function isDone(k){ const e=S.evals[k]; return e && e.answers.filter(Boolean).length===QUESTIONS.length; }
+function counts(){
+  const it=items(); let done=0, skip=0;
+  it.forEach(a=>{ if(S.skipped[a.key]) skip++; else if(isDone(a.key)) done++; });
+  return {total:it.length, done, skip, left:it.length-done-skip};
+}
+function setSteps(cur){
+  const order=["info","list","eval","review"]; let passed=true;
+  document.querySelectorAll(".step").forEach(el=>el.classList.remove("active","done"));
+  order.forEach(s=>{
+    const el=document.querySelector(`.step[data-s="${s}"]`);
+    if(s===cur){el.classList.add("active");passed=false;} else if(passed) el.classList.add("done");
+  });
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function initials(id){ const n=(TEACHERS[id]||{}).name||"؟"; return n.trim().charAt(0); }
+
+/* ---------- ١) البيانات الأساسية ---------- */
+function renderInfo(){
+  if(lsGet(LS_DONE)) return renderAlready();
+  setSteps("info");
+  const stageCfg = S.dept && S.stage ? ASSIGNMENTS[S.dept][S.stage] : null;
+  const secs = stageCfg ? stageCfg.sections : [];
+  const pills=(field,opts)=>`<div class="pills" data-f="${field}">${opts.map(o=>
+    `<button type="button" class="pill ${S[field]===o?"sel":""}" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div>`;
+  app.innerHTML=`
+  <div class="card">
+    <h2>ابدأ الاستبانة</h2>
+    <p class="hint">اختر قسمك ومرحلتك، وستظهر لك قائمة التدريسيين الذين درّسوك مع موادهم، لتقيّمهم جميعاً في استمارة واحدة.</p>
+    <div class="row">
+      <div><label class="fld">القسم *</label>
+        <select id="dept"><option value="">— اختر القسم —</option>
+        ${Object.entries(DEPTS).map(([k,d])=>`<option value="${k}" ${S.dept===k?"selected":""}>${d.name}</option>`).join("")}
+        </select></div>
+      <div><label class="fld">المرحلة الدراسية *</label>
+        <select id="stage"><option value="">— اختر المرحلة —</option>
+        ${[1,2,3,4].map(n=>`<option value="${n}" ${+S.stage===n?"selected":""}>المرحلة ${STAGE_NAMES[n]}</option>`).join("")}
+        </select></div>
+    </div>
+    ${secs.length?`<label class="fld">الشعبة *</label>${pills("section",secs)}`:""}
+    <label class="fld">النوع *</label>${pills("gender",["ذكر","انثى"])}
+    <div class="row">
+      <div><label class="fld">هل تمتلك حاسبة شخصية؟ *</label>${pills("pc",["نعم","لا"])}</div>
+      <div><label class="fld">هل لديك خط انترنت منزلي؟ *</label>${pills("net",["نعم","لا"])}</div>
+    </div>
+    ${SURVEY.requireCode?`<label class="fld">رمز الدخول *</label>
+      <input type="text" id="code" value="${esc(S.code)}" placeholder="الرمز الذي سلّمته لك شعبة ضمان الجودة" autocomplete="off">`:""}
+    <div class="actions"><span class="spacer"></span>
+      <button class="btn" id="go">عرض تدريسيّي ←</button></div>
+    <div id="err"></div>
+  </div>`;
+  const dept=document.getElementById("dept"), stage=document.getElementById("stage");
+  const changeScope=()=>{ S.dept=dept.value; S.stage=stage.value; S.section=""; save(); renderInfo(); };
+  dept.onchange=changeScope; stage.onchange=changeScope;
+  document.querySelectorAll(".pills").forEach(p=>p.querySelectorAll(".pill").forEach(b=>{
+    b.onclick=()=>{ S[p.dataset.f]=b.dataset.v; save();
+      p.querySelectorAll(".pill").forEach(x=>x.classList.toggle("sel",x===b)); };
+  }));
+  document.getElementById("go").onclick=()=>{
+    if(SURVEY.requireCode) S.code=document.getElementById("code").value.trim();
+    const miss=[];
+    if(!S.dept)miss.push("القسم"); if(!S.stage)miss.push("المرحلة");
+    if(secs.length&&!S.section)miss.push("الشعبة");
+    if(!S.gender)miss.push("النوع"); if(!S.pc)miss.push("الحاسبة"); if(!S.net)miss.push("الانترنت");
+    if(SURVEY.requireCode&&!S.code)miss.push("رمز الدخول");
+    if(miss.length){ document.getElementById("err").innerHTML=`<div class="error">يرجى إكمال: ${miss.join("، ")}</div>`; return; }
+    save(); renderList();
+  };
+}
+
+/* ---------- ٢) قائمة التدريسيين ---------- */
+function renderList(){
+  setSteps("list");
+  const it=items(), c=counts();
+  const pct=c.total?Math.round((c.done+c.skip)/c.total*100):0;
+  app.innerHTML=`
+  <div class="card">
+    <h2>تدريسيو المرحلة ${STAGE_NAMES[S.stage]}${S.section?" — شعبة "+esc(S.section):""}</h2>
+    <p class="hint">${DEPTS[S.dept].name}. اضغط على أي تدريسي لتقييمه في المادة المبيّنة أمامه — المادة محدّدة تلقائياً.</p>
+    <div class="progress"><i style="width:${pct}%"></i></div>
+    <div class="progress-txt">أنجزت ${c.done} من ${c.total}${c.skip?` · ${c.skip} لم يدرّسك`:""}${c.left?` · متبقٍ ${c.left}`:" · اكتملت القائمة ✓"}</div>
+    <div class="tlist">
+      ${it.map((a,i)=>{
+        const head=(i===0||it[i-1].sem!==a.sem)?`<div class="semhead">${SEM_NAMES[a.sem]}${a.sem===0?" (الفصلان)":""}</div>`:"";
+        const st=S.skipped[a.key]?"skip":isDone(a.key)?"done":"";
+        const lbl=st==="skip"?"لم يدرّسني":st==="done"?"تم ✓":"لم يُقيَّم";
+        return head+`<button class="titem ${st}" data-k="${esc(a.key)}">
+          <span class="av">${st==="done"?"✓":esc(initials(a.teacherId))}</span>
+          <span class="tx"><div class="nm">${esc(teacherLabel(a.teacherId))}</div>
+            <div class="sb">المادة: <b>${esc(a.subject)}</b></div></span>
+          <span class="st">${lbl}</span></button>`;
+      }).join("")}
+    </div>
+    <div class="actions">
+      <button class="btn-ghost" id="back">→ تعديل بياناتي</button><span class="spacer"></span>
+      <button class="btn-gold" id="finish" ${c.left||!c.done?"disabled":""}>مراجعة وإرسال الاستمارة ←</button>
+    </div>
+    ${c.left?`<div class="notice">قيّم جميع التدريسيين في القائمة لتتمكن من الإرسال. إن كان أحدهم لم يدرّسك فعلاً، افتحه واختر «لم يدرّسني هذه المادة».</div>`:""}
+  </div>`;
+  document.querySelectorAll(".titem").forEach(el=>el.onclick=()=>{ S.cur=el.dataset.k; save(); renderEval(); });
+  document.getElementById("back").onclick=renderInfo;
+  document.getElementById("finish").onclick=renderReview;
+}
+
+/* ---------- ٣) التقييم ---------- */
+function nextPending(fromKey){
+  const it=items(); const i=it.findIndex(a=>a.key===fromKey);
+  const order=[...it.slice(i+1),...it.slice(0,i)];
+  return order.find(a=>!S.skipped[a.key]&&!isDone(a.key));
+}
+function renderEval(){
+  setSteps("eval");
+  const it=items(); const a=it.find(x=>x.key===S.cur); if(!a) return renderList();
+  const pos=it.indexOf(a)+1;
+  const e=S.evals[a.key]||{answers:Array(QUESTIONS.length).fill(0),comment:""};
+  S.evals[a.key]=e;
+  app.innerHTML=`
+  <div class="card">
+    <div class="progress-txt">التدريسي ${pos} من ${it.length}</div>
+    <h2>${esc(teacherLabel(a.teacherId))}</h2>
+    <div class="subjhead"><span class="tag">المادة: <b>${esc(a.subject)}</b></span>
+      <span class="tag">المرحلة ${STAGE_NAMES[S.stage]}${S.section?" / "+esc(S.section):""}</span>
+      <span class="tag">${SEM_NAMES[a.sem]}</span></div>
+    <div class="quick">تعبئة سريعة (ثم عدّل ما تشاء):
+      ${SCALE.map(s=>`<button type="button" data-all="${s.v}">الكل ${s.t}</button>`).join("")}</div>
+    <div id="qs">
+    ${QUESTIONS.map((q,i)=>`
+      <div class="q" data-i="${i}">
+        <div class="qtext"><span class="qn">${i+1}.</span><span>${esc(q)}</span></div>
+        <div class="scale">${SCALE.map(s=>`<button type="button" data-v="${s.v}" class="${e.answers[i]===s.v?"sel":""}">${s.t}</button>`).join("")}</div>
+      </div>`).join("")}
+    </div>
+    <label class="fld">ملاحظات إضافية (اختياري)</label>
+    <textarea id="comment" maxlength="600" placeholder="أي ملاحظة تخص هذا التدريسي في هذه المادة...">${esc(e.comment)}</textarea>
+    <div class="actions">
+      <button class="btn-ghost" id="back">→ القائمة</button>
+      <button class="linkbtn" id="skip">لم يدرّسني هذه المادة</button>
+      <span class="spacer"></span>
+      <button class="btn" id="save">حفظ والانتقال للتالي ←</button>
+    </div>
+    <div id="warn"></div>
+  </div>`;
+  const qs=document.getElementById("qs");
+  const paint=()=>qs.querySelectorAll(".q").forEach(qel=>{
+    const i=+qel.dataset.i; qel.classList.remove("missing");
+    qel.querySelectorAll("button").forEach(b=>b.classList.toggle("sel",+b.dataset.v===e.answers[i]));
+  });
+  qs.querySelectorAll(".q").forEach(qel=>qel.querySelectorAll("button").forEach(b=>{
+    b.onclick=()=>{ e.answers[+qel.dataset.i]=+b.dataset.v; save(); paint(); };
+  }));
+  document.querySelectorAll("[data-all]").forEach(b=>b.onclick=()=>{ e.answers=e.answers.map(()=>+b.dataset.all); S.evals[a.key]=e; save(); paint(); });
+  document.getElementById("comment").oninput=ev=>{ e.comment=ev.target.value; save(); };
+  document.getElementById("back").onclick=()=>{ save(); renderList(); };
+  document.getElementById("skip").onclick=()=>{
+    if(!confirm("تأكيد: هذا التدريسي لم يدرّسك هذه المادة؟ لن يُحتسب تقييمك له.")) return;
+    S.skipped[a.key]=true; delete S.evals[a.key]; save(); goNext(a.key);
+  };
+  document.getElementById("save").onclick=()=>{
+    const miss=e.answers.map((v,i)=>v?null:i).filter(v=>v!==null);
+    if(miss.length){
+      miss.forEach(i=>qs.querySelector(`.q[data-i="${i}"]`).classList.add("missing"));
+      document.getElementById("warn").innerHTML=`<div class="error">بقيت ${miss.length} فقرة بلا إجابة (مظلّلة أعلاه).</div>`;
+      qs.querySelector(`.q[data-i="${miss[0]}"]`).scrollIntoView({behavior:"smooth",block:"center"});
+      return;
+    }
+    delete S.skipped[a.key]; save(); goNext(a.key);
+  };
+}
+function goNext(k){ const n=nextPending(k); if(n){ S.cur=n.key; save(); renderEval(); } else renderList(); }
+
+/* ---------- ٤) المراجعة والإرسال ---------- */
+function avgOf(ans){ return ans.reduce((x,y)=>x+y,0)/ans.length; }
+function renderReview(){
+  setSteps("review");
+  const it=items().filter(a=>!S.skipped[a.key]&&isDone(a.key));
+  app.innerHTML=`
+  <div class="card">
+    <h2>مراجعة الاستمارة قبل الإرسال</h2>
+    <p class="hint">${DEPTS[S.dept].name} · المرحلة ${STAGE_NAMES[S.stage]}${S.section?" / "+esc(S.section):""} · ${it.length} تقييماً. اضغط أي بند لتعديله.</p>
+    ${it.map(a=>{ const p=avgOf(S.evals[a.key].answers)/5*100;
+      return `<div class="sum" data-k="${esc(a.key)}" style="cursor:pointer">
+        <div><div class="m">${esc(teacherLabel(a.teacherId))}</div><div class="s">${esc(a.subject)} · ${SEM_NAMES[a.sem]}</div></div>
+        <span class="v">${p.toFixed(0)}%</span></div>`; }).join("")}
+    <div class="actions">
+      <button class="btn-ghost" id="back">→ رجوع للقائمة</button><span class="spacer"></span>
+      <button class="btn-gold" id="submit">إرسال الاستمارة نهائياً ✓</button>
+    </div>
+    <div class="notice">بعد الإرسال لا يمكن التعديل ولا إعادة ملء الاستمارة لهذا العام الدراسي.</div>
+    <div id="err"></div>
+  </div>`;
+  document.querySelectorAll(".sum").forEach(el=>el.onclick=()=>{ S.cur=el.dataset.k; save(); renderEval(); });
+  document.getElementById("back").onclick=renderList;
+  document.getElementById("submit").onclick=submit;
+}
+function buildRecord(){
+  const it=items().filter(a=>!S.skipped[a.key]&&isDone(a.key));
+  return {
+    id: (crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random().toString(36).slice(2)),
+    submittedAt:new Date().toISOString(), year:SURVEY.academicYear,
+    dept:S.dept, stage:+S.stage, section:S.section||"", gender:S.gender, pc:S.pc, net:S.net,
+    code:SURVEY.requireCode?S.code:"",
+    evaluations: it.map(a=>{ const t=TEACHERS[a.teacherId];
+      return { teacherId:a.teacherId, teacher:t.name, rank:t.rank, homeDept:t.dept, subject:a.subject, semester:SEM_NAMES[a.sem],
+               answers:S.evals[a.key].answers.map(v=>SCALE.find(s=>s.v===v).t),
+               comment:(S.evals[a.key].comment||"").trim().slice(0,600) }; })
+  };
+}
+async function submit(){
+  const btn=document.getElementById("submit"), err=document.getElementById("err");
+  const rec=buildRecord();
+  if(!SURVEY.supabase&&!SURVEY.endpoint){ return renderDone(rec,false); }
+  btn.disabled=true; btn.textContent="جارٍ الإرسال…"; err.innerHTML="";
+  try{
+    const j = SURVEY.supabase ? await svRpc("sv_submit",{p:rec})
+      : await (await fetch(SURVEY.endpoint,{method:"POST",body:JSON.stringify(rec)})).json();
+    if(!j.ok) throw new Error(j.error||"تعذّر الحفظ");
+    renderDone(rec,true);
+  }catch(e){
+    btn.disabled=false; btn.textContent="إرسال الاستمارة نهائياً ✓";
+    err.innerHTML=`<div class="error">لم يتم الإرسال: ${esc(e.message)}. تحقق من الاتصال وأعد المحاولة — إجاباتك محفوظة.</div>`;
+  }
+}
+function renderDone(rec,online){
+  lsSet(LS_DONE,{at:rec.submittedAt}); lsDel(LS_DRAFT);
+  setSteps("review");
+  app.innerHTML=`
+  <div class="card success">
+    <div class="ok">✓</div>
+    <h2>${online?"تم إرسال الاستمارة بنجاح":"اكتملت الاستمارة"}</h2>
+    <p class="hint">شكراً لمشاركتك. ${online?`سُجّلت ${rec.evaluations.length} تقييمات في استمارة واحدة.`:
+      "وضع التجربة: لم يُضبط رابط الاستلام بعد — نزّل الملف وسلّمه لشعبة ضمان الجودة."}</p>
+    ${online?"":`<div class="actions" style="justify-content:center"><button class="btn" id="dl">تنزيل ملف الاستمارة (JSON)</button></div>`}
+  </div>`;
+  if(!online) document.getElementById("dl").onclick=()=>{
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(new Blob([JSON.stringify(rec,null,1)],{type:"application/json"}));
+    a.download=`استمارة_${rec.dept}_م${rec.stage}_${Date.now()}.json`; a.click();
+  };
+}
+function renderAlready(){
+  setSteps("review");
+  app.innerHTML=`<div class="card success"><div class="ok">✓</div>
+    <h2>سبق لك إرسال الاستمارة</h2>
+    <p class="hint">تُملأ الاستبانة مرة واحدة لكل عام دراسي. شكراً لمشاركتك.</p></div>`;
+}
+
+renderInfo();
+/* هل رموز الدخول مفعّلة الآن؟ (تُضبط من لوحة النتائج) */
+if(SURVEY.supabase) svRpc("sv_public_config").then(c=>{
+  if(!!c.require_code!==SURVEY.requireCode){ SURVEY.requireCode=!!c.require_code; if(!lsGet(LS_DONE)&&document.getElementById("dept")) renderInfo(); }
+}).catch(()=>{});
+</script>
+</body>
+</html>
