@@ -152,7 +152,7 @@ function lsDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
 
 /* الحالة */
 let S = lsGet(LS_DRAFT) || {
-  dept:"", stage:"", section:"", gender:"", pc:"", net:"", code:"",
+  dept:"", stage:"", section:"", gender:"", pc:"", net:"",
   evals:{},   // key -> {answers:[1..5], comment}
   skipped:{}, // key -> true
   cur:null
@@ -204,8 +204,6 @@ function renderInfo(){
       <div><label class="fld">هل تمتلك حاسبة شخصية؟ *</label>${pills("pc",["نعم","لا"])}</div>
       <div><label class="fld">هل لديك خط انترنت منزلي؟ *</label>${pills("net",["نعم","لا"])}</div>
     </div>
-    ${SURVEY.requireCode?`<label class="fld">رمز الدخول *</label>
-      <input type="text" id="code" value="${esc(S.code)}" placeholder="الرمز الذي سلّمته لك شعبة ضمان الجودة" autocomplete="off">`:""}
     <div class="actions"><span class="spacer"></span>
       <button class="btn" id="go">عرض تدريسيّي ←</button></div>
     <div id="err"></div>
@@ -218,12 +216,10 @@ function renderInfo(){
       p.querySelectorAll(".pill").forEach(x=>x.classList.toggle("sel",x===b)); };
   }));
   document.getElementById("go").onclick=()=>{
-    if(SURVEY.requireCode) S.code=document.getElementById("code").value.trim();
     const miss=[];
     if(!S.dept)miss.push("القسم"); if(!S.stage)miss.push("المرحلة");
     if(secs.length&&!S.section)miss.push("الشعبة");
     if(!S.gender)miss.push("النوع"); if(!S.pc)miss.push("الحاسبة"); if(!S.net)miss.push("الانترنت");
-    if(SURVEY.requireCode&&!S.code)miss.push("رمز الدخول");
     if(miss.length){ document.getElementById("err").innerHTML=`<div class="error">يرجى إكمال: ${miss.join("، ")}</div>`; return; }
     save(); renderList();
   };
@@ -359,7 +355,6 @@ function buildRecord(){
     id: (crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random().toString(36).slice(2)),
     submittedAt:new Date().toISOString(), year:SURVEY.academicYear,
     dept:S.dept, stage:+S.stage, section:S.section||"", gender:S.gender, pc:S.pc, net:S.net,
-    code:SURVEY.requireCode?S.code:"",
     evaluations: it.map(a=>{ const t=TEACHERS[a.teacherId];
       return { teacherId:a.teacherId, teacher:t.name, rank:t.rank, homeDept:t.dept, subject:a.subject, semester:SEM_NAMES[a.sem],
                answers:S.evals[a.key].answers.map(v=>SCALE.find(s=>s.v===v).t),
@@ -406,10 +401,6 @@ function renderAlready(){
 }
 
 renderInfo();
-/* هل رموز الدخول مفعّلة الآن؟ (تُضبط من لوحة النتائج) */
-if(SURVEY.supabase) svRpc("sv_public_config").then(c=>{
-  if(!!c.require_code!==SURVEY.requireCode){ SURVEY.requireCode=!!c.require_code; if(!lsGet(LS_DONE)&&document.getElementById("dept")) renderInfo(); }
-}).catch(()=>{});
 </script>
 </body>
 </html>

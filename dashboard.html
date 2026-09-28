@@ -105,7 +105,6 @@ tr.sub td{background:#fbfaf6;font-size:.86rem;color:#34474d}
     <button class="tab" data-t="sample">العيّنة حسب المرحلة</button>
     <button class="tab" data-t="roster">مطابقة الأسماء والألقاب</button>
     <button class="tab" data-t="method">آلية الاحتساب</button>
-    <button class="tab" data-t="admin">الإدارة ورموز الدخول</button>
   </div>
   <div class="card" id="view"></div>
 </div>
@@ -318,36 +317,10 @@ function viewMethod(){
   <p style="margin-top:8px" class="hint">يظهر تنبيه «عيّنة صغيرة» إذا قلّ عدد المجيبين عن ${MIN_N}.</p></div>`;
 }
 
-let ADM=null, CODES=[];
-function viewAdmin(){
-  if(!SURVEY.supabase) return `<div class="empty">الإدارة متاحة مع خادم Supabase فقط.</div>`;
-  if(!ADM) return `<div class="empty">اجلب النتائج بمفتاح المدير أولاً، ثم <button class="btn" id="admLoad">تحميل الإعدادات</button></div>`;
-  return `<p class="hint">رموز الدخول تمنع ملء الاستمارة أكثر من مرة: كل رمز يُستعمل لمرة واحدة ولا يرتبط باسم الطالب.</p>
-   <div class="bar" style="margin-top:10px"><b>رموز الدخول الآن: ${ADM.require_code?"مفعّلة ✓":"معطّلة"}</b>
-     <button class="${ADM.require_code?"btn-ghost":"btn"}" id="admToggle">${ADM.require_code?"تعطيل الرموز":"تفعيل الرموز"}</button>
-     <span class="hint">مولَّد: ${ADM.codes_total} · مستخدم: ${ADM.codes_used}</span></div>
-   <div class="bar" style="margin-top:12px">
-     <input type="number" id="cN" value="30" min="1" max="500" style="width:90px">
-     <select id="cD"><option value="">أي قسم</option>${Object.entries(DEPTS).map(([k,d])=>`<option value="${k}">${d.name}</option>`).join("")}</select>
-     <select id="cS"><option value="">أي مرحلة</option>${[1,2,3,4].map(n=>`<option value="${n}">المرحلة ${STAGE_NAMES[n]}</option>`).join("")}</select>
-     <button class="btn-gold" id="cGen">توليد رموز</button></div>
-   ${CODES.length?`<div class="card" style="margin-top:12px"><div class="bar"><b>الرموز الجديدة (${CODES.length}) — اطبعها وقصّها ووزّعها:</b><span class="sp"></span><button class="btn-ghost" onclick="window.print()">🖨 طباعة</button></div>
-     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">${CODES.map(c=>`<div style="border:1px dashed #999;border-radius:8px;padding:10px;text-align:center"><div class="hint">رمز استبانة رأي الطالب</div><b style="font-size:1.3rem;letter-spacing:2px;direction:ltr;display:block">${c}</b></div>`).join("")}</div></div>`:""}`;
-}
-async function admRefresh(){ const j=await svRpc("sv_admin_config",{p_key:adminKey()}); if(!j.ok) throw new Error(j.error); ADM=j; }
-function bindAdmin(v){
-  const err=e=>alert("خطأ: "+e.message);
-  const l=v.querySelector("#admLoad"); if(l) l.onclick=()=>admRefresh().then(render).catch(err);
-  const t=v.querySelector("#admToggle"); if(t) t.onclick=()=>svRpc("sv_admin_config",{p_key:adminKey(),p_require_code:!ADM.require_code}).then(j=>{if(!j.ok)throw new Error(j.error);ADM=j;render();}).catch(err);
-  const g=v.querySelector("#cGen"); if(g) g.onclick=()=>svRpc("sv_admin_codes",{p_key:adminKey(),p_n:+v.querySelector("#cN").value||1,
-      p_dept:v.querySelector("#cD").value||null,p_stage:+v.querySelector("#cS").value||null})
-    .then(j=>{if(!j.ok)throw new Error(j.error);CODES=j.codes;return admRefresh();}).then(render).catch(err);
-}
 function render(){
   renderKPIs();
   const v=document.getElementById("view");
-  v.innerHTML={teachers:viewTeachers,coverage:viewCoverage,sample:viewSample,roster:viewRoster,method:viewMethod,admin:viewAdmin}[tab]();
-  if(tab==="admin") bindAdmin(v);
+  v.innerHTML={teachers:viewTeachers,coverage:viewCoverage,sample:viewSample,roster:viewRoster,method:viewMethod}[tab]();
   if(tab==="teachers"&&ROWS.length){
     document.getElementById("fDept").onchange=e=>{filt.dept=e.target.value;render();};
     document.getElementById("fSort").onchange=e=>{filt.sort=e.target.value;render();};
