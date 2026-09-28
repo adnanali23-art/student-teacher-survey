@@ -134,7 +134,7 @@ footer.note{text-align:center;color:var(--muted);font-size:.8rem;margin-top:26px
   </div>
 
   <div id="app"></div>
-  <footer class="note">شعبة ضمان الجودة والأداء الجامعي — كلية الهندسة / الشرقاط</footer>
+  <footer class="note">شعبة ضمان الجودة و تقييم الاداء المؤسسي — كلية الهندسة / الشرقاط</footer>
 </div>
 
 <script src="data.js"></script>
@@ -384,7 +384,7 @@ function renderDone(rec,online){
     <div class="ok">✓</div>
     <h2>${online?"تم إرسال الاستمارة بنجاح":"اكتملت الاستمارة"}</h2>
     <p class="hint">شكراً لمشاركتك. ${online?`سُجّلت ${rec.evaluations.length} تقييمات في استمارة واحدة.`:
-      "وضع التجربة: لم يُضبط رابط الاستلام بعد — نزّل الملف وسلّمه لشعبة ضمان الجودة."}</p>
+      "وضع التجربة: لم يُضبط رابط الاستلام بعد — نزّل الملف وسلّمه إلى شعبة ضمان الجودة و تقييم الاداء المؤسسي."}</p>
     ${online?"":`<div class="actions" style="justify-content:center"><button class="btn" id="dl">تنزيل ملف الاستمارة (JSON)</button></div>`}
   </div>`;
   if(!online) document.getElementById("dl").onclick=()=>{

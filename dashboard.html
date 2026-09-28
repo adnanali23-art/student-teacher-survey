@@ -339,7 +339,7 @@ function printReport(id){
   const t=teacherResults().find(x=>x.id===id);
   document.getElementById("report").innerHTML=`
    <div style="text-align:center;margin-bottom:16px"><h2 style="color:var(--navy)">${SURVEY.university} — ${SURVEY.college}</h2>
-     <div>شعبة ضمان الجودة والأداء الجامعي</div><h3 style="margin-top:8px">نتيجة استبانة رأي الطالب بالتدريسي — العام الدراسي ${SURVEY.academicYear}</h3></div>
+     <div>شعبة ضمان الجودة و تقييم الاداء المؤسسي</div><h3 style="margin-top:8px">نتيجة استبانة رأي الطالب بالتدريسي — العام الدراسي ${SURVEY.academicYear}</h3></div>
    <table><tr><th>التدريسي</th><td>${esc(t.label)}</td><th>قسم الملاك</th><td>${DEPTS[t.dept].name}</td></tr>
      <tr><th>عدد الطلبة المجيبين</th><td>${t.n}</td><th>الدرجة النهائية</th><td><b>${t.score.toFixed(2)}%</b> — ${t.grade}</td></tr></table>
    <h4 style="margin:14px 0 6px">درجة كل مادة</h4>
@@ -348,7 +348,7 @@ function printReport(id){
    <h4 style="margin:14px 0 6px">متوسط الفقرات (من 5)</h4>
    <table>${QUESTIONS.map((q,i)=>`<tr><td>${i+1}. ${esc(q)}</td><td class="num">${t.qMeans[i].toFixed(2)}</td></tr>`).join("")}</table>
    <p style="margin-top:14px;font-size:.85rem">الدرجة النهائية = (متوسط متوسطات الفقرات ÷ 5) × 100 — وفق المعادلة الوزارية.</p>
-   <div style="display:flex;justify-content:space-between;margin-top:50px"><span>مسؤول شعبة ضمان الجودة</span><span>العميد</span></div>`;
+   <div style="display:flex;justify-content:space-between;margin-top:50px"><span>مسؤول شعبة ضمان الجودة و تقييم الاداء المؤسسي</span><span>العميد</span></div>`;
   document.body.classList.add("print-one"); window.print(); document.body.classList.remove("print-one");
 }
 
