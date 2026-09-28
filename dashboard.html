@@ -59,7 +59,11 @@ tr.sub td{background:#fbfaf6;font-size:.86rem;color:#34474d}
 .empty{text-align:center;padding:40px 10px;color:var(--muted)}
 .hidden{display:none}
 .report{display:none}
-@media (max-width:760px){.load{grid-template-columns:1fr}.hide-sm{display:none}table{font-size:.82rem}}
+#view{overflow-x:auto}
+.load>div{min-width:0}
+.load .r input{min-width:0!important}
+@media (max-width:760px){.load{grid-template-columns:1fr}.hide-sm{display:none}table{font-size:.82rem}
+  header{padding:16px}header h1{font-size:1.1rem}.wrap{padding:12px 10px 40px}.qgrid{grid-template-columns:1fr}}
 @media print{
   body{background:#fff}.wrap{max-width:none;padding:0}
   .no-print{display:none!important}
